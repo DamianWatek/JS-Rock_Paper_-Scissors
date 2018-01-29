@@ -1,7 +1,54 @@
 // Przycisk NOWA GRA
 var newGameBtn = document.getElementById('js-newGameButton');
 
-newGameBtn.addEventListener('click', newGame);
+
+// Funkcja otwierająca modal
+var promptModal = document.querySelector('.promptModal');
+
+function openModal() {
+  newGameBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    promptModal.style.display = 'flex';
+    document.querySelector('body').style.overflow = 'hidden';
+      
+    setTimeout(function(){
+      promptModal.classList.add('show');
+     }, 1);
+  });
+};
+openModal()
+
+// Funkcja zamykająca modal
+function closeModal() {
+  const closeBtn = document.querySelector('.close');
+  closeBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+      promptModal.classList.remove('show');
+      promptModal.style.display = 'none';
+      document.querySelector('body').style.overflow = 'hidden';
+
+    });
+};
+closeModal()
+// Przekazywanie wartości z inputa
+function inputVal() {
+        let name = document.querySelector('.inputName').value;
+        return name;
+};
+function subBtn() {
+    const subInput = document.querySelector('.subInput');
+    subInput.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        promptModal.classList.remove('show');
+        promptModal.style.display = 'none';
+        newGame();
+    });
+};
+subBtn()
+
 // Przyciski Kamień, Papier, Nożyce 
 var pickRock = document.getElementById('js-playerPick_rock'),
     pickPaper = document.getElementById('js-playerPick_paper'),
@@ -36,20 +83,21 @@ function setGameElements() {
     }
 }
 setGameElements();
+
 // Rozpoczęcie gry
 var playerPointsElem = document.getElementById('js-playerPoints'),
     playerNameElem = document.getElementById('js-playerName'),
     computerPointsElem = document.getElementById('js-computerPoints');
 // Funkcja po uruchomieniu New Game
 function newGame() {
-	player.name = prompt('Please enter your name', 'imię gracza');
+    player.name = inputVal();
 	if (player.name) {
     	player.score = computer.score = 0;
     	gameState = 'started';
     	setGameElements();
 
     	playerNameElem.innerHTML = player.name;
-		setGamePoints(); // This function has not been created yet
+		setGamePoints(); 
     }
 }
 // Wybory gracza (kamien, papier, nozyce)
@@ -101,6 +149,7 @@ function checkRoundWinner(playerPick, computerPick) {
     setGamePoints();
     finishedGame(); 
 }
+
 
 function playerPick(playerPick) {
     var computerPick = getComputerPick();
